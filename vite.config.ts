@@ -8,7 +8,18 @@ import tailwindcss from '@tailwindcss/vite'
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
-  plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact()],
+  plugins: [
+    devtools(),
+    tailwindcss(),
+    tanstackStart({
+      router: {
+        entry: 'app/router',
+        routesDirectory: 'app/routes',
+        generatedRouteTree: 'app/routeTree.gen.ts',
+      },
+    }),
+    viteReact(),
+  ],
 })
 
 export default config

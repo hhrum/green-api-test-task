@@ -27,6 +27,7 @@
   "devDependencies": {
     "@tanstack/devtools-vite": "0.8.5",
     "@tanstack/eslint-config": "0.4.0",
+    "@tanstack/intent": "^0.5.5",
     "@tanstack/router-cli": "^1.132.0",
     "@types/node": "^22.10.2",
     "@types/react": "^19.2.0",
@@ -41,6 +42,11 @@
     "onlyBuiltDependencies": [
       "esbuild",
       "lightningcss"
+    ]
+  },
+  "intent": {
+    "skills": [
+      "@tanstack/router-core"
     ]
   }
 }
