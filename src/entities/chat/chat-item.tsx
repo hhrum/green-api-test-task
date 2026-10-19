@@ -1,6 +1,7 @@
 import {
   Avatar,
   AvatarFallback,
+  Badge,
   Item,
   ItemContent,
   ItemDescription,
@@ -9,7 +10,7 @@ import {
 } from '@/shared/shadcn/components'
 import { CheckCheck } from 'lucide-react'
 
-export function ChatItem() {
+export function ChatItem({ fromMe }: { fromMe?: boolean }) {
   return (
     <Item className="hover:bg-muted rounded-none cursor-pointer" size="xs">
       <ItemMedia>
@@ -18,19 +19,33 @@ export function ChatItem() {
         </Avatar>
       </ItemMedia>
       <ItemContent>
-        <ItemTitle className="w-full">
+        <div className="flex gap-2 items-center">
           {/* chat-name */}
-          <span className='flex-1'>Любимая</span>
+          <ItemTitle className="flex-1">Любимая</ItemTitle>
 
           {/* read-status */}
-          <CheckCheck className='size-4 text-blue-400' />
+          {fromMe && <CheckCheck className="size-4 text-blue-400" />}
 
           {/* last-message-time */}
           <span className="font-light text-xs text-muted-foreground">
             21:32
           </span>
-        </ItemTitle>
-        <ItemDescription>купи сок</ItemDescription>
+        </div>
+
+        <div className="flex gap-2">
+          <ItemDescription className="flex-1">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum
+          </ItemDescription>
+
+          {/* new-message-badge-counter */}
+          {!fromMe && <Badge className="float-right">1</Badge>}
+        </div>
       </ItemContent>
     </Item>
   )
