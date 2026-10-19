@@ -124,10 +124,10 @@ my-nextjs-project/
 
 ```typescript
 // pages/example/index.tsx
-export { Example as default } from '@/_pages/example';
+export { Example as default } from '@/_pages/example'
 
 // pages/_app.tsx: re-export the custom App from src/_app/custom-app
-export { App as default } from '@/_app/custom-app';
+export { App as default } from '@/_app/custom-app'
 ```
 
 The custom App implementation lives in `src/_app/custom-app/` and exposes
@@ -169,43 +169,43 @@ become thin re-exports.
 
 ```typescript
 // src/_app/api-routes/get-example-data.ts
-import { getExamplesList } from '@/shared/db';
+import { getExamplesList } from '@/shared/db'
 
 export const getExampleData = () => {
   try {
-    const examplesList = getExamplesList();
-    return Response.json({ examplesList });
+    const examplesList = getExamplesList()
+    return Response.json({ examplesList })
   } catch {
     return Response.json(null, {
       status: 500,
       statusText: 'Ouch, something went wrong',
-    });
+    })
   }
-};
+}
 
 // src/_app/api-routes/index.ts
-export { getExampleData } from './get-example-data';
+export { getExampleData } from './get-example-data'
 
 // app/api/example/route.ts
-export { getExampleData as GET } from '@/_app/api-routes';
+export { getExampleData as GET } from '@/_app/api-routes'
 ```
 
 **Pages Router:**
 
 ```typescript
 // src/_app/api-routes/get-example-data.ts
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-const config = { api: { bodyParser: { sizeLimit: '1mb' } }, maxDuration: 5 };
+const config = { api: { bodyParser: { sizeLimit: '1mb' } }, maxDuration: 5 }
 const handler = (req: NextApiRequest, res: NextApiResponse) =>
-  res.status(200).json({ message: 'Hello from FSD' });
+  res.status(200).json({ message: 'Hello from FSD' })
 
-export const getExampleData = { config, handler } as const;
+export const getExampleData = { config, handler } as const
 
 // pages/api/example.ts
-import { getExampleData } from '@/_app/api-routes';
-export const config = getExampleData.config;
-export default getExampleData.handler;
+import { getExampleData } from '@/_app/api-routes'
+export const config = getExampleData.config
+export default getExampleData.handler
 ```
 
 Keep Route Handlers as framework-facing adapters and delegate domain rules
@@ -293,13 +293,13 @@ my-nuxt-project/
 // nuxt.config.ts
 export default defineNuxtConfig({
   alias: {
-    "@": "../src",
+    '@': '../src',
   },
   dir: {
-    pages: "./src/app/routes",
-    layouts: "./src/app/layouts",
+    pages: './src/app/routes',
+    layouts: './src/app/layouts',
   },
-});
+})
 ```
 
 ### Wiring Nuxt routes to FSD pages
@@ -307,7 +307,7 @@ export default defineNuxtConfig({
 ```vue
 <!-- src/app/routes/index.vue -->
 <script setup>
-import { HomePage } from "@/pages/home";
+import { HomePage } from '@/pages/home'
 </script>
 
 <template>
@@ -345,20 +345,20 @@ Vite resolver agrees with TypeScript:
 
 ```typescript
 // vite.config.ts
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import { resolve } from "path";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@/app": resolve(__dirname, "src/app"),
-      "@/pages": resolve(__dirname, "src/pages"),
-      "@/shared": resolve(__dirname, "src/shared"),
+      '@/app': resolve(__dirname, 'src/app'),
+      '@/pages': resolve(__dirname, 'src/pages'),
+      '@/shared': resolve(__dirname, 'src/shared'),
     },
   },
-});
+})
 ```
 
 Create React App is no longer maintained. A project still on it follows
@@ -410,12 +410,12 @@ delegate the application work to what the FSD page's public API exposes.
 
 ```typescript
 // app/routes.ts
-import { type RouteConfig, index, route } from "@react-router/dev/routes";
+import { type RouteConfig, index, route } from '@react-router/dev/routes'
 
 export default [
-  index("routes/home.tsx"),
-  route("products/:id", "routes/product.tsx"),
-] satisfies RouteConfig;
+  index('routes/home.tsx'),
+  route('products/:id', 'routes/product.tsx'),
+] satisfies RouteConfig
 ```
 
 ```typescript
@@ -447,13 +447,13 @@ Vite plugin:
 
 ```typescript
 // vite.config.ts
-import { defineConfig } from "vite";
-import { reactRouter } from "@react-router/dev/vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from 'vite'
+import { reactRouter } from '@react-router/dev/vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   plugins: [reactRouter(), tsconfigPaths()],
-});
+})
 ```
 
 ## Astro

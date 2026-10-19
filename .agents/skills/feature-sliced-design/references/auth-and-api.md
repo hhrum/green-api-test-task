@@ -19,15 +19,21 @@ handling, is a user action and does not come with them:
 
 ```typescript
 // shared/auth/token.ts
-const TOKEN_KEY = "auth_token";
-export const getToken = () => localStorage.getItem(TOKEN_KEY);
-export const setToken = (t: string) => localStorage.setItem(TOKEN_KEY, t);
-export const clearToken = () => localStorage.removeItem(TOKEN_KEY);
+const TOKEN_KEY = 'auth_token'
+export const getToken = () => localStorage.getItem(TOKEN_KEY)
+export const setToken = (t: string) => localStorage.setItem(TOKEN_KEY, t)
+export const clearToken = () => localStorage.removeItem(TOKEN_KEY)
 
 // shared/auth/session.ts
-export interface Session { userId: string; email: string; role: "admin" | "user" }
+export interface Session {
+  userId: string
+  email: string
+  role: 'admin' | 'user'
+}
 // useSession depends on the auth provider (React Context, Zustand, etc.)
-export const useSession = (): Session | null => { /* ... */ };
+export const useSession = (): Session | null => {
+  /* ... */
+}
 ```
 
 The `shared/auth/index.ts` re-exports from these files following the
@@ -206,12 +212,12 @@ navigation callback into the feature:
 
 ```typescript
 // pages/settings/ui/SettingsPage.tsx
-const logout = useLogout();
+const logout = useLogout()
 
 const onLogout = async () => {
-  await logout();
-  navigate("/login");
-};
+  await logout()
+  navigate('/login')
+}
 ```
 
 ```text
@@ -276,13 +282,13 @@ token into the client carries the failure back out.
 
 The location of type definitions follows the same rules as any other code:
 
-| Type scope | Location |
-| --- | --- |
-| API response/request shapes shared across the app | Domain-named files in `shared/api/` (e.g., `shared/api/product.ts`) |
-| Types for a specific entity's domain model | `entities/<name>/model/<name>.ts` |
-| Types used only within one page | `pages/<name>/model/<name>.ts` |
-| Types used only within one feature | `features/<name>/model/<name>.ts` |
-| Generic utility types (e.g., `Nullable<T>`) | Purpose-named files in `shared/lib/` (e.g., `shared/lib/nullable.ts`) |
+| Type scope                                        | Location                                                              |
+| ------------------------------------------------- | --------------------------------------------------------------------- |
+| API response/request shapes shared across the app | Domain-named files in `shared/api/` (e.g., `shared/api/product.ts`)   |
+| Types for a specific entity's domain model        | `entities/<name>/model/<name>.ts`                                     |
+| Types used only within one page                   | `pages/<name>/model/<name>.ts`                                        |
+| Types used only within one feature                | `features/<name>/model/<name>.ts`                                     |
+| Generic utility types (e.g., `Nullable<T>`)       | Purpose-named files in `shared/lib/` (e.g., `shared/lib/nullable.ts`) |
 
 Per Rule 4-4 (domain-based file naming), avoid grouping all types in
 `types.ts` or `utils.ts`. A file named `types.ts` cannot answer "types
@@ -293,11 +299,11 @@ for what?" without inspection; a file named `product.ts` can.
 ```typescript
 // shared/api/product.ts: raw API response shapes
 export interface ProductDTO {
-  id: string;
-  name: string;
-  price: number;
-  category: string;
-  createdAt: string;
+  id: string
+  name: string
+  price: number
+  category: string
+  createdAt: string
 }
 ```
 
@@ -305,14 +311,14 @@ export interface ProductDTO {
 
 ```typescript
 // entities/product/model/product.ts: the shape the domain works with
-import type { ProductDTO } from "@/shared/api";
+import type { ProductDTO } from '@/shared/api'
 
 export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  listPrice: number;
-  inStock: boolean;
+  id: string
+  name: string
+  price: number
+  listPrice: number
+  inStock: boolean
 }
 
 export const fromProductDTO = (dto: ProductDTO): Product => ({
@@ -321,11 +327,11 @@ export const fromProductDTO = (dto: ProductDTO): Product => ({
   price: dto.price,
   listPrice: dto.listPrice,
   inStock: dto.stock > 0,
-});
+})
 
 // a rule, not a stored flag: it follows the price rather than a snapshot
 export const isOnSale = (product: Product) =>
-  product.price < product.listPrice && product.inStock;
+  product.price < product.listPrice && product.inStock
 ```
 
 **Key principle:** Raw API shapes go in `shared/api/`. A domain model stays
@@ -339,26 +345,26 @@ need the raw shape, do not create an entity just for types.
 
 ```typescript
 // pages/product-detail/api/fetch-product.ts
-import { apiClient, type ProductDTO } from "@/shared/api";
+import { apiClient, type ProductDTO } from '@/shared/api'
 
 export const fetchProduct = (id: string): Promise<ProductDTO> =>
-  apiClient.get(`/products/${id}`).then((r) => r.data);
+  apiClient.get(`/products/${id}`).then((r) => r.data)
 ```
 
 ### Shared API client setup
 
 ```typescript
 // shared/api/client.ts
-import axios from "axios";
-import { getToken } from "@/shared/auth";
+import axios from 'axios'
+import { getToken } from '@/shared/auth'
 
-export const apiClient = axios.create({ baseURL: import.meta.env.VITE_API_URL });
+export const apiClient = axios.create({ baseURL: import.meta.env.VITE_API_URL })
 
 apiClient.interceptors.request.use((config) => {
-  const token = getToken();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+  const token = getToken()
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  return config
+})
 ```
 
 The `shared/api/index.ts` re-exports from these files, so consumers import
@@ -369,15 +375,18 @@ The `shared/api/index.ts` re-exports from these files, so consumers import
 
 ```typescript
 // shared/api/create-crud-api.ts
-import { apiClient } from "./client";
+import { apiClient } from './client'
 
 export const createCrudApi = <T>(resource: string) => ({
   getAll: () => apiClient.get<T[]>(`/${resource}`).then((r) => r.data),
-  getById: (id: string) => apiClient.get<T>(`/${resource}/${id}`).then((r) => r.data),
-  create: (data: Partial<T>) => apiClient.post<T>(`/${resource}`, data).then((r) => r.data),
-  update: (id: string, data: Partial<T>) => apiClient.put<T>(`/${resource}/${id}`, data).then((r) => r.data),
+  getById: (id: string) =>
+    apiClient.get<T>(`/${resource}/${id}`).then((r) => r.data),
+  create: (data: Partial<T>) =>
+    apiClient.post<T>(`/${resource}`, data).then((r) => r.data),
+  update: (id: string, data: Partial<T>) =>
+    apiClient.put<T>(`/${resource}/${id}`, data).then((r) => r.data),
   remove: (id: string) => apiClient.delete(`/${resource}/${id}`),
-});
+})
 
 // Usage: export const productsApi = createCrudApi<ProductDTO>("products");
 ```

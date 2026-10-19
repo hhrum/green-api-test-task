@@ -83,10 +83,10 @@ entities/
 
 ```typescript
 // entities/user/@x/order.ts: exposes only what order needs
-export { getUserDisplayName } from "../model/user";
+export { getUserDisplayName } from '../model/user'
 
 // entities/order/model/order-summary.ts
-import { getUserDisplayName } from "@/entities/user/@x/order";
+import { getUserDisplayName } from '@/entities/user/@x/order'
 ```
 
 ### Rules when using @x
@@ -252,7 +252,7 @@ cross-imports:
 ```vue
 <!-- features/manage-wishlist/ui/WishlistItems.vue -->
 <script setup lang="ts">
-defineProps<{ items: WishlistItem[] }>();
+defineProps<{ items: WishlistItem[] }>()
 </script>
 
 <template>
@@ -266,8 +266,8 @@ defineProps<{ items: WishlistItem[] }>();
 
 <!-- pages/wishlist/ui/WishlistPage.vue -->
 <script setup lang="ts">
-import { WishlistItems } from "@/features/manage-wishlist";
-import { AddToCartButton } from "@/features/add-to-cart";
+import { WishlistItems } from '@/features/manage-wishlist'
+import { AddToCartButton } from '@/features/add-to-cart'
 </script>
 
 <template>

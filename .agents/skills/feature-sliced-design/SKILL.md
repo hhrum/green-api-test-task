@@ -87,12 +87,12 @@ in Section 7.
 
 ```typescript
 // Allowed
-import { Button } from "@/shared/ui/Button"; // features → shared
-import { useUser } from "@/entities/user"; // pages → entities
+import { Button } from '@/shared/ui/Button' // features → shared
+import { useUser } from '@/entities/user' // pages → entities
 
 // Violation
-import { loginUser } from "@/features/auth"; // entities → features
-import { likePost } from "@/features/like-post"; // features → features
+import { loginUser } from '@/features/auth' // entities → features
+import { likePost } from '@/features/like-post' // features → features
 ```
 
 **Note**: The `processes/` layer is **deprecated** in v2.1. For migration
@@ -149,17 +149,17 @@ extraction rule holds.**
 
 ## 3. Quick placement table
 
-| Scenario                   | Single use                                  | Confirmed multi-use                   |
-| -------------------------- | ------------------------------------------- | ------------------------------------- |
-| User profile form          | `pages/profile/ui/ProfileForm.tsx`          | `features/profile-form/`              |
+| Scenario                   | Single use                                  | Confirmed multi-use                          |
+| -------------------------- | ------------------------------------------- | -------------------------------------------- |
+| User profile form          | `pages/profile/ui/ProfileForm.tsx`          | `features/profile-form/`                     |
 | Product card               | `pages/products/ui/ProductCard.tsx`         | `entities/product/ui/` if the entity owns it |
-| API request (read or CRUD) | `pages/product-detail/api/fetch-product.ts` | `shared/api/` (no domain rules)       |
-| Auth token/session         | `shared/auth/`                              | `shared/auth/`                        |
-| Auth login form            | `pages/login/ui/LoginForm.tsx`              | `features/auth/`                      |
-| Generic Card layout        |                                             | `shared/ui/Card/`                     |
-| Modal manager              |                                             | `shared/ui/modal-manager/`            |
-| Modal content              | `pages/[page]/ui/SomeModal.tsx`             |                                       |
-| Date formatting util       |                                             | `shared/lib/format-date.ts`           |
+| API request (read or CRUD) | `pages/product-detail/api/fetch-product.ts` | `shared/api/` (no domain rules)              |
+| Auth token/session         | `shared/auth/`                              | `shared/auth/`                               |
+| Auth login form            | `pages/login/ui/LoginForm.tsx`              | `features/auth/`                             |
+| Generic Card layout        |                                             | `shared/ui/Card/`                            |
+| Modal manager              |                                             | `shared/ui/modal-manager/`                   |
+| Modal content              | `pages/[page]/ui/SomeModal.tsx`             |                                              |
+| Date formatting util       |                                             | `shared/lib/format-date.ts`                  |
 
 "Confirmed multi-use" means the extraction rule holds, not that a second
 consumer appeared: two similar copies that keep drifting apart stay in
@@ -186,10 +186,10 @@ of internal files are forbidden.
 
 ```typescript
 // Correct
-import { LoginForm } from "@/features/auth";
+import { LoginForm } from '@/features/auth'
 
 // Violation: bypasses public API
-import { LoginForm } from "@/features/auth/ui/LoginForm";
+import { LoginForm } from '@/features/auth/ui/LoginForm'
 ```
 
 **Shared layer:** Shared has no slices. Define a separate public API per
@@ -265,7 +265,7 @@ threshold should be high.
 - Code that looks reusable but is simpler to keep local
 
 **Evolution pattern:** Start with everything in `pages/profile/`. Extract
-the shared model to `entities/user/` when a second page consumes it *and*
+the shared model to `entities/user/` when a second page consumes it _and_
 the extraction rule holds. A response type that several pages read is not
 one of those cases: it stays in `shared/api`. Keep page-specific API calls
 and UI in the page.
