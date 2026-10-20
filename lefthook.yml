@@ -1,0 +1,14 @@
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: pnpm exec commitlint --edit {1}
+
+pre-push:
+  parallel: true
+  jobs:
+    - name: lint
+      run: pnpm lint
+    - name: format
+      run: pnpm check
+    - name: typecheck
+      run: pnpm typecheck

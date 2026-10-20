@@ -4,6 +4,7 @@ import {
   Message,
   MessageContent,
 } from '@/shared/shadcn/components'
+import { CheckCheck } from 'lucide-react'
 import type { PropsWithChildren } from 'react'
 
 export function ChatMessage({
@@ -20,7 +21,8 @@ export function ChatMessage({
           <BubbleContent>
             <p>
               {children}
-              <time className="text-xs ml-1 leading-6.5 float-right text-muted-foreground">
+              {fromMe && <CheckCheck className="size-4 ml-1 mt-1 float-right text-blue-500" />}
+              <time className="text-xs ml-1.5 leading-6.5 float-right text-muted-foreground">
                 23:15
               </time>
             </p>

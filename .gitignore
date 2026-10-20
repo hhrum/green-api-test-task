@@ -11,3 +11,5 @@ dist-ssr
 .vinxi
 __unconfig*
 todos.json
+lefthook-local.yml
+lefthook-local.yaml
