@@ -1,4 +1,5 @@
 export {
+  getCredentials,
   getIsAuthenticated,
   initAuth,
   login,

@@ -30,6 +30,11 @@ export function getIsAuthenticated() {
   return credentials !== null
 }
 
+export function getCredentials(): AuthCredentials | null {
+  initAuth()
+  return credentials ? { ...credentials } : null
+}
+
 function persist(nextCredentials: AuthCredentials) {
   credentials = nextCredentials
   initialized = true
