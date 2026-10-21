@@ -12,6 +12,9 @@ const config = defineConfig({
     devtools(),
     tailwindcss(),
     tanstackStart({
+      spa: {
+        enabled: true,
+      },
       router: {
         entry: 'app/router',
         routesDirectory: 'app/routes',
