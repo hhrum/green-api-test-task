@@ -1,3 +1,7 @@
+import { useNavigate } from '@tanstack/react-router'
+import type { SyntheticEvent } from 'react'
+
+import { login } from '@/shared/auth'
 import {
   Button,
   Card,
@@ -13,8 +17,21 @@ import {
 } from '@/shared/shadcn/components'
 
 export function AuthForm() {
+  const navigate = useNavigate()
+
+  function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+
+    // todo: handle errors
+    void login({
+      idInstance: String(formData.get('idInstance') ?? ''),
+      apiTokenInstance: String(formData.get('apiTokenInstance') ?? ''),
+    }).then(() => navigate({ to: '/' }))
+  }
+
   return (
-    <Card className="min-w-100">
+    <Card className="w-full md:w-100">
       <CardHeader>
         <CardTitle>Войти в свой аккаунт</CardTitle>
         <CardDescription>
@@ -22,15 +39,15 @@ export function AuthForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="id">idInstance</FieldLabel>
-              <Input id="id" required />
+              <Input id="id" name="idInstance" required />
             </Field>
             <Field>
               <FieldLabel htmlFor="apiToken">apiTokenInstance</FieldLabel>
-              <Input id="apiToken" required />
+              <Input id="apiToken" name="apiTokenInstance" required />
             </Field>
             <Field>
               <Button type="submit">Войти</Button>

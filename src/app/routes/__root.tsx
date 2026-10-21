@@ -4,6 +4,8 @@ import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import type { QueryClient } from '@tanstack/react-query'
 
+import { initAuth } from '@/shared/auth'
+
 import appCss from '../styles/global.css?url'
 
 export const Route = createRootRouteWithContext<{
@@ -29,6 +31,9 @@ export const Route = createRootRouteWithContext<{
       },
     ],
   }),
+  beforeLoad: () => {
+    initAuth()
+  },
   shellComponent: RootDocument,
 })
 
