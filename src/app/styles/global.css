@@ -17,6 +17,7 @@ body,
 
 body {
   margin: 0;
+  position: relative;
 }
 
 @theme inline {

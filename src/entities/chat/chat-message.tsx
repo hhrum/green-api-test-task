@@ -21,7 +21,9 @@ export function ChatMessage({
           <BubbleContent>
             <p>
               {children}
-              {fromMe && <CheckCheck className="size-4 ml-1 mt-1 float-right text-blue-500" />}
+              {fromMe && (
+                <CheckCheck className="size-4 ml-1 mt-1 float-right text-blue-500" />
+              )}
               <time className="text-xs ml-1.5 leading-6.5 float-right text-muted-foreground">
                 23:15
               </time>
