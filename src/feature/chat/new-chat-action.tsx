@@ -22,6 +22,7 @@ import type { ChangeEvent } from 'react'
 
 export function NewChatAction() {
   const [chatId, setChatId] = useState<string | undefined>(undefined)
+  const [error, setError] = useState<boolean>(false)
 
   const verified = chatId !== undefined
 
@@ -30,6 +31,7 @@ export function NewChatAction() {
   const handleVerify = (phone: string) => {
     readMessageMutation.mutateAsync({ phoneNumber: phone }).then((data) => {
       if (!data.exist) {
+        setError(true)
         return
       }
 
@@ -38,8 +40,8 @@ export function NewChatAction() {
   }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    if (value.length === 11) {
+    const value = e.target.value.trim()
+    if (value.length === 11 && value.startsWith('7')) {
       handleVerify(value)
     }
   }
@@ -58,7 +60,8 @@ export function NewChatAction() {
           <DrawerTitle>Новый чат</DrawerTitle>
           <DrawerDescription>Введите номер телефона</DrawerDescription>
         </DrawerHeader>
-        <div className="flex flex-col gap-1 p-4">
+        <div className="flex flex-col gap-2 p-4">
+          Номер должен содержать 11 цифр и начинаться с 7.
           <InputGroup>
             <InputGroupInput
               placeholder="8 (999) 999-99-99"
@@ -67,19 +70,29 @@ export function NewChatAction() {
             />
             <InputGroupAddon align="inline-end">
               {readMessageMutation.isPending && <Spinner />}
-              {!readMessageMutation.isPending && <CheckIcon className={cn(verified && 'text-green-500')} />}
+              {!readMessageMutation.isPending && (
+                <CheckIcon
+                  className={cn(
+                    verified && 'text-green-500',
+                    error && 'text-red-500',
+                  )}
+                />
+              )}
             </InputGroupAddon>
           </InputGroup>
         </div>
         <DrawerFooter>
           {verified && (
-            <Link className="w-full flex flex-col" to="/chat/$chatId" params={{ chatId }} replace>
+            <Link
+              className="w-full flex flex-col"
+              to="/chat/$chatId"
+              params={{ chatId }}
+              replace
+            >
               <Button>Создать</Button>
             </Link>
           )}
-          {!verified && (
-            <Button disabled>Создать</Button>
-          )}
+          {!verified && <Button disabled>Создать</Button>}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
