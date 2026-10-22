@@ -23,7 +23,7 @@ export function ChatHeader() {
   const canGoBack = useCanGoBack()
 
   const chatsQuery = useQuery(chatQueries.list())
-  
+
   const chat = chatsQuery.data?.find((item) => item.chatId === chatId)
   const title = chat?.name || 'Новый чат'
 

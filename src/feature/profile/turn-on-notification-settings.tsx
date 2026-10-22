@@ -79,7 +79,10 @@ export function TurnOnNotificationSettings({
 
         <DrawerFooter>
           {!settingsMutation.isSuccess && (
-            <Button disabled={settingsMutation.isPending} onClick={handleToggleOn}>
+            <Button
+              disabled={settingsMutation.isPending}
+              onClick={handleToggleOn}
+            >
               {settingsMutation.isPending && <Spinner className="size-4" />}
               Включить
             </Button>
