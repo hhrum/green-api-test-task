@@ -13,10 +13,9 @@ import {
 export function ChatsList() {
   const chatsQuery = useQuery(chatQueries.list())
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (chatsQuery.isLoading) {
     return (
-      <div className="flex justify-center p-6">
+      <div className="flex min-h-0 flex-1 justify-center p-6">
         <Spinner />
       </div>
     )
@@ -24,7 +23,7 @@ export function ChatsList() {
 
   if (chatsQuery.isError) {
     return (
-      <Empty>
+      <Empty className="min-h-0 flex-1 border-none">
         <EmptyHeader>
           <EmptyTitle>Не удалось загрузить чаты</EmptyTitle>
           <EmptyDescription>{chatsQuery.error.message}</EmptyDescription>
@@ -35,7 +34,7 @@ export function ChatsList() {
 
   if (!chatsQuery.data || chatsQuery.data.length === 0) {
     return (
-      <Empty>
+      <Empty className="min-h-0 flex-1 border-none">
         <EmptyHeader>
           <EmptyTitle>Чатов пока нет</EmptyTitle>
         </EmptyHeader>
@@ -44,10 +43,11 @@ export function ChatsList() {
   }
 
   return (
-    <div className="flex flex-col md:max-w-100">
+    <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
       {chatsQuery.data.map((chat) => (
         <ChatItem
           key={chat.chatId}
+          chatId={chat.chatId}
           name={chat.name || chat.chatId}
           unreadCount={chat.unreadCount}
         />

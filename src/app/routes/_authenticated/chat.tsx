@@ -1,6 +1,17 @@
-import { ChatPage } from '@/pages/chat'
-import { createFileRoute } from '@tanstack/react-router'
+import { ChatShell } from '@/pages/chat'
+import { Outlet, createFileRoute, useMatchRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/chat')({
-  component: ChatPage,
+  component: ChatLayoutRoute,
 })
+
+function ChatLayoutRoute() {
+  const matchRoute = useMatchRoute()
+  const showConversation = Boolean(matchRoute({ to: '/chat/$chatId' }))
+
+  return (
+    <ChatShell showConversation={showConversation}>
+      <Outlet />
+    </ChatShell>
+  )
+}

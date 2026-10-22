@@ -10,27 +10,31 @@ import {
 import { Link } from '@tanstack/react-router'
 
 export function ChatItem({
+  chatId,
   name,
   unreadCount = 0,
 }: {
+  chatId: string
   name: string
   unreadCount?: number
 }) {
   return (
-    <Link to="/chat">
-      <Item className="hover:bg-muted rounded-none cursor-pointer" size="xs">
-        <ItemMedia>
-          <Avatar size="lg">
-            <AvatarFallback>{name.slice(0, 1).toUpperCase()}</AvatarFallback>
-          </Avatar>
-        </ItemMedia>
-        <ItemContent>
-          <div className="flex gap-2 items-center">
-            <ItemTitle className="flex-1">{name}</ItemTitle>
-            {unreadCount > 0 && <Badge>{unreadCount}</Badge>}
-          </div>
-        </ItemContent>
-      </Item>
-    </Link>
+    <Item
+      className="cursor-pointer rounded-none hover:bg-muted data-[status=active]:bg-muted"
+      size="xs"
+      render={<Link to="/chat/$chatId" params={{ chatId }} replace />}
+    >
+      <ItemMedia>
+        <Avatar size="lg">
+          <AvatarFallback>{name.slice(0, 1).toUpperCase()}</AvatarFallback>
+        </Avatar>
+      </ItemMedia>
+      <ItemContent>
+        <div className="flex gap-2 items-center">
+          <ItemTitle className="flex-1">{name}</ItemTitle>
+          {unreadCount > 0 && <Badge>{unreadCount}</Badge>}
+        </div>
+      </ItemContent>
+    </Item>
   )
 }

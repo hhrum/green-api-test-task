@@ -1,8 +1,4 @@
-export {
-  getChatHistory,
-  getChatMessageText,
-  getChats,
-} from './chat'
+export { getChatHistory, getChatMessageText, getChats } from './chat'
 
 export { chatMutationKeys } from './chat.mutations'
 

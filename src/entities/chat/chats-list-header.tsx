@@ -1,3 +1,4 @@
+import { Separator } from '@/shared/shadcn/components'
 import type { ReactNode } from 'react'
 
 export function ChatsListHeader({ action }: { action?: ReactNode }) {
@@ -7,6 +8,7 @@ export function ChatsListHeader({ action }: { action?: ReactNode }) {
         <span className="text-2xl font-medium">Чаты</span>
         {action}
       </div>
+      <Separator />
     </>
   )
 }

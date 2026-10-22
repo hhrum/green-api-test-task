@@ -6,6 +6,14 @@ import type {
   GetChatHistoryParams,
 } from './chat.types'
 
+const mediaMessageLabel = {
+  stickerMessage: 'Стикер',
+  imageMessage: 'Изображение',
+  videoMessage: 'Видео',
+  documentMessage: 'Документ',
+  audioMessage: 'Аудио',
+} as const
+
 export function getChats(count?: number) {
   return greenApi<Array<ChatDto>>('getChats', { query: { count } })
 }
@@ -17,10 +25,24 @@ export function getChatHistory({ chatId, count }: GetChatHistoryParams) {
 }
 
 export function getChatMessageText(message: ChatMessageDto) {
-  return (
-    message.textMessage ??
-    message.extendedTextMessage?.text ??
-    message.caption ??
-    ''
-  )
+  switch (message.typeMessage) {
+    case 'textMessage':
+      return message.textMessage
+    case 'extendedTextMessage':
+      return message.extendedTextMessage.text || message.textMessage
+    case 'pollMessage':
+      return message.pollMessageData.name
+    case 'reactionMessage':
+      return message.extendedTextMessageData.text
+    case 'stickerMessage':
+    case 'imageMessage':
+    case 'videoMessage':
+    case 'documentMessage':
+    case 'audioMessage':
+      return (
+        message.caption ||
+        message.fileName ||
+        mediaMessageLabel[message.typeMessage]
+      )
+  }
 }

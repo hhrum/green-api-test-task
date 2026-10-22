@@ -4,7 +4,7 @@ import { ChatSendMessageForm } from '@/widgets/chat/chat-send-message-form'
 
 export function ChatPage() {
   return (
-    <div className="flex flex-col min-h-screen relative">
+    <div className="relative flex h-full min-h-0 flex-col">
       <ChatHeader />
       <ChatMessages />
       <ChatSendMessageForm />

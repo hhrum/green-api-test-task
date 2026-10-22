@@ -1,36 +1,86 @@
+import { useQuery } from '@tanstack/react-query'
+import { useParams } from '@tanstack/react-router'
+
+import { ChatMessage } from '@/entities/chat'
+import { chatQueries, getChatMessageText } from '@/shared/api'
 import {
-  MessageScrollerContent,
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
   MessageScroller,
+  MessageScrollerButton,
+  MessageScrollerContent,
+  MessageScrollerItem,
   MessageScrollerProvider,
   MessageScrollerViewport,
-  MessageScrollerButton,
-  MessageScrollerItem,
+  Spinner,
 } from '@/shared/shadcn/components'
-import { ChatMessage } from '@/entities/chat'
 
 export function ChatMessages() {
+  const { chatId } = useParams({ from: '/_authenticated/chat/$chatId' })
+  const historyQuery = useQuery(chatQueries.history(chatId))
+
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (historyQuery.isLoading) {
+    return (
+      <div className="flex min-h-0 flex-1 justify-center p-6">
+        <Spinner />
+      </div>
+    )
+  }
+
+  if (historyQuery.isError) {
+    return (
+      <Empty className="min-h-0 flex-1 border-none">
+        <EmptyHeader>
+          <EmptyTitle>Не удалось загрузить сообщения</EmptyTitle>
+          <EmptyDescription>{historyQuery.error.message}</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    )
+  }
+
+  const messages = [...(historyQuery.data ?? [])].sort(
+    (left, right) => left.timestamp - right.timestamp,
+  )
+
+  if (messages.length === 0) {
+    return (
+      <Empty className="min-h-0 flex-1 border-none">
+        <EmptyHeader>
+          <EmptyTitle>Сообщений пока нет</EmptyTitle>
+        </EmptyHeader>
+      </Empty>
+    )
+  }
+
   return (
-    <MessageScrollerProvider>
+    <MessageScrollerProvider autoScroll defaultScrollPosition="end">
       <MessageScroller className="flex-1 p-2">
         <MessageScrollerViewport>
-          <MessageScrollerContent>
-            <MessageScrollerItem>
-              <ChatMessage fromMe>Привет! Как дела?</ChatMessage>
-            </MessageScrollerItem>
-            <MessageScrollerItem>
-              <ChatMessage>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum
-              </ChatMessage>
-            </MessageScrollerItem>
+          <MessageScrollerContent className="justify-end pb-16">
+            {messages.map((message, index) => (
+              <MessageScrollerItem
+                key={`${message.idMessage}-${message.timestamp}-${index}`}
+                messageId={message.idMessage}
+              >
+                <ChatMessage
+                  fromMe={message.type === 'outgoing'}
+                  senderName={
+                    message.chatType === 'group' && message.type === 'incoming'
+                      ? message.senderName || message.senderContactName
+                      : undefined
+                  }
+                  timestamp={message.timestamp}
+                >
+                  {getChatMessageText(message)}
+                </ChatMessage>
+              </MessageScrollerItem>
+            ))}
           </MessageScrollerContent>
         </MessageScrollerViewport>
-        <MessageScrollerButton />
+        <MessageScrollerButton className="data-[direction=end]:bottom-16" />
       </MessageScroller>
     </MessageScrollerProvider>
   )

@@ -19,12 +19,14 @@ export function NewChatAction() {
 
   return (
     <Drawer>
-      <DrawerTrigger>
-        <Button variant="ghost" size="icon">
-          <PlusIcon />
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
+      <DrawerTrigger
+        render={
+          <Button variant="ghost" size="icon">
+            <PlusIcon />
+          </Button>
+        }
+      />
+      <DrawerContent className="md:max-w-md md:mx-auto md:mb-10">
         <DrawerHeader>
           <DrawerTitle>Новый чат</DrawerTitle>
           <DrawerDescription>Введите номер телефона</DrawerDescription>
