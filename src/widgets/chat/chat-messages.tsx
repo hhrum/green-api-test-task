@@ -21,7 +21,6 @@ export function ChatMessages() {
   const { chatId } = useParams({ from: '/_authenticated/chat/$chatId' })
   const historyQuery = useQuery(chatQueries.history(chatId))
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (historyQuery.isLoading) {
     return (
       <div className="flex min-h-0 flex-1 justify-center p-6">

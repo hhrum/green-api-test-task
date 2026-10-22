@@ -11,13 +11,16 @@ export function AuthenticatedLayout() {
   }
 
   if (!getSettingsQuery.data) {
-    return "Произошла ошибка при загрузке настроек"
+    return 'Произошла ошибка при загрузке настроек'
   }
 
   return (
     <>
       <Outlet />
-      <TurnOnNotificationSettings settings={getSettingsQuery.data} onNeedRefreshSettings={getSettingsQuery.refetch} />
+      <TurnOnNotificationSettings
+        settings={getSettingsQuery.data}
+        onNeedRefreshSettings={getSettingsQuery.refetch}
+      />
     </>
   )
 }

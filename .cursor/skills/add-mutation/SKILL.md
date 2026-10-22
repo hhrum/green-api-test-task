@@ -34,6 +34,7 @@ export function setSettings(body: SetSettingsParams) {
 
 - Method name is the path segment only: `setSettings`, not the full `{{apiUrl}}/waInstance...` URL.
 - A JSON body goes in `body`. `greenApi` sends POST when `body` is set. `JSON.stringify` drops `undefined` fields, so a partial body is enough. An empty object is valid when the user says nothing is required. Do not add an "at least one field" constraint they did not ask for.
+
 3. **Factory** in `<domain>.mutations.ts`. One object, `<domain>Mutations`, built with `mutationOptions` from `@tanstack/react-query`. The key hangs off that domain's query root:
 
 ```ts
@@ -49,6 +50,7 @@ export const profileMutations = {
 `chat.mutations.ts` still exports a `chatMutationKeys` stub. Replace that stub with `chatMutations` when the first chat mutation is added. Do not keep both.
 
 Do not put `onSuccess`, cache invalidation, or UI state in the factory. The caller decides what to refresh.
+
 4. **Public API.** Export the function, params type, response DTO, and `<domain>Mutations` from the domain `index.ts`. Consumers import `@/shared/api`, never a file inside the domain.
 
 Skip a mutation that already exists. Extend its params or DTO instead of adding a second factory entry.

@@ -1,4 +1,4 @@
-import { profileMutations, profileQueries } from '@/shared/api'
+import { profileMutations } from '@/shared/api'
 import type { ProfileSettingsDto } from '@/shared/api'
 import {
   Button,
@@ -22,7 +22,7 @@ export function TurnOnNotificationSettings({
   settings,
   onNeedRefreshSettings,
 }: {
-  settings: ProfileSettingsDto,
+  settings: ProfileSettingsDto
   onNeedRefreshSettings: () => void
 }) {
   const isTurnedOff =
@@ -94,7 +94,9 @@ export function TurnOnNotificationSettings({
             </Button>
           )}
           {status === 'success' && (
-            <Button onClick={() => setOpen(false)} variant="secondary">Закрыть</Button>
+            <Button onClick={() => setOpen(false)} variant="secondary">
+              Закрыть
+            </Button>
           )}
         </DrawerFooter>
       </DrawerContent>

@@ -33,6 +33,7 @@ export function getChatHistory({ chatId, count }: GetChatHistoryParams) {
 
 - Method name is the path segment only: `getChatHistory`, not the full `{{apiUrl}}/waInstance...` URL.
 - Query string (`count` on `getChats`) goes in `query`. A JSON body goes in `body`. `greenApi` sends POST when `body` is set and GET otherwise. Omit `undefined` fields; the client already drops undefined query values, and `JSON.stringify` drops undefined body fields.
+
 3. **Factory** in `<domain>.queries.ts`. Extend the existing object. Keys are hierarchical, and an optional argument is `param ?? null` so the key stays stable:
 
 ```ts
