@@ -16,8 +16,6 @@ import { useState } from 'react'
 
 const disableToggleOpen = () => null
 
-type TurnOnResultStatus = 'success' | 'error' | 'loading' | 'idle'
-
 export function TurnOnNotificationSettings({
   settings,
   onNeedRefreshSettings,
@@ -31,25 +29,18 @@ export function TurnOnNotificationSettings({
     settings.incomingWebhook === 'no'
 
   const [open, setOpen] = useState(isTurnedOff)
-  const [status, setStatus] = useState<TurnOnResultStatus>('idle')
 
   const settingsMutation = useMutation(profileMutations.setSettings())
 
   const handleToggleOn = () => {
-    setStatus('loading')
     settingsMutation
       .mutateAsync({
         outgoingWebhook: 'yes',
         stateWebhook: 'yes',
         incomingWebhook: 'yes',
       })
-      .then((data) => {
+      .then(() => {
         onNeedRefreshSettings()
-        if (data.saveSettings) {
-          setStatus('success')
-        } else {
-          setStatus('error')
-        }
       })
   }
 
@@ -87,13 +78,13 @@ export function TurnOnNotificationSettings({
         </div>
 
         <DrawerFooter>
-          {status !== 'success' && (
-            <Button disabled={status === 'loading'} onClick={handleToggleOn}>
-              {status === 'loading' && <Spinner className="size-4" />}
+          {!settingsMutation.isSuccess && (
+            <Button disabled={settingsMutation.isPending} onClick={handleToggleOn}>
+              {settingsMutation.isPending && <Spinner className="size-4" />}
               Включить
             </Button>
           )}
-          {status === 'success' && (
+          {settingsMutation.isSuccess && (
             <Button onClick={() => setOpen(false)} variant="secondary">
               Закрыть
             </Button>

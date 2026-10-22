@@ -1,6 +1,11 @@
-export { getChatHistory, getChatMessageText, getChats } from './chat'
+export {
+  getChatHistory,
+  getChatMessageText,
+  getChats,
+  sendMessage,
+} from './chat'
 
-export { chatMutationKeys } from './chat.mutations'
+export { chatMutations } from './chat.mutations'
 
 export { chatQueries } from './chat.queries'
 
@@ -8,4 +13,6 @@ export type {
   ChatDto,
   ChatMessageDto,
   GetChatHistoryParams,
+  SendMessageDto,
+  SendMessageParams,
 } from './chat.types'

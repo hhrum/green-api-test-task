@@ -4,6 +4,8 @@ import type {
   ChatDto,
   ChatMessageDto,
   GetChatHistoryParams,
+  SendMessageDto,
+  SendMessageParams,
 } from './chat.types'
 
 const mediaMessageLabel = {
@@ -22,6 +24,10 @@ export function getChatHistory({ chatId, count }: GetChatHistoryParams) {
   return greenApi<Array<ChatMessageDto>>('getChatHistory', {
     body: { chatId, count },
   })
+}
+
+export function sendMessage(body: SendMessageParams) {
+  return greenApi<SendMessageDto>('sendMessage', { body })
 }
 
 export function getChatMessageText(message: ChatMessageDto) {

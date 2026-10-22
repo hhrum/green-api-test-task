@@ -102,3 +102,13 @@ export type GetChatHistoryParams = {
   chatId: string
   count?: number
 }
+
+export type SendMessageParams = {
+  chatId: string
+  message: string
+  quotedMessageId?: string
+}
+
+export type SendMessageDto = {
+  idMessage: string
+}
