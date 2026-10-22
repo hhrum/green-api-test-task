@@ -14,10 +14,12 @@ export class GreenApiError extends Error {
 }
 
 type GreenApiRequest = {
-  method?: 'GET' | 'POST'
+  method?: 'GET' | 'POST' | 'DELETE'
   body?: unknown
   query?: Record<string, string | number | undefined>
   credentials?: AuthCredentials
+  suffix?: string
+  signal?: AbortSignal
 }
 
 export async function greenApi<T>(
@@ -30,8 +32,9 @@ export async function greenApi<T>(
     throw new GreenApiError('Missing Green API credentials', 401)
   }
 
+  const suffix = request.suffix ? `/${encodeURIComponent(request.suffix)}` : ''
   const url = new URL(
-    `${API_ORIGIN}/waInstance${encodeURIComponent(credentials.idInstance)}/${methodName}/${encodeURIComponent(credentials.apiTokenInstance)}`,
+    `${API_ORIGIN}/waInstance${encodeURIComponent(credentials.idInstance)}/${methodName}/${encodeURIComponent(credentials.apiTokenInstance)}${suffix}`,
   )
 
   for (const [key, value] of Object.entries(request.query ?? {})) {
@@ -43,6 +46,7 @@ export async function greenApi<T>(
     method: request.method ?? (hasBody ? 'POST' : 'GET'),
     headers: hasBody ? { 'Content-Type': 'application/json' } : undefined,
     body: hasBody ? JSON.stringify(request.body) : undefined,
+    signal: request.signal,
   })
 
   if (!response.ok) {
@@ -53,5 +57,8 @@ export async function greenApi<T>(
     )
   }
 
-  return response.json() as Promise<T>
+  const text = (await response.text()).trim()
+  if (!text) return null as T
+
+  return JSON.parse(text) as T
 }

@@ -112,3 +112,12 @@ export type SendMessageParams = {
 export type SendMessageDto = {
   idMessage: string
 }
+
+export type ReadChatParams = {
+  chatId: string
+  idMessage?: string
+}
+
+export type ReadChatDto = {
+  setRead: boolean
+}

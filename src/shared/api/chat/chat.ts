@@ -4,6 +4,8 @@ import type {
   ChatDto,
   ChatMessageDto,
   GetChatHistoryParams,
+  ReadChatDto,
+  ReadChatParams,
   SendMessageDto,
   SendMessageParams,
 } from './chat.types'
@@ -28,6 +30,10 @@ export function getChatHistory({ chatId, count }: GetChatHistoryParams) {
 
 export function sendMessage(body: SendMessageParams) {
   return greenApi<SendMessageDto>('sendMessage', { body })
+}
+
+export function readChat(body: ReadChatParams) {
+  return greenApi<ReadChatDto>('readChat', { body })
 }
 
 export function getChatMessageText(message: ChatMessageDto) {

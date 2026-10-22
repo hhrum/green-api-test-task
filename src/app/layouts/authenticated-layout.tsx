@@ -1,3 +1,4 @@
+import { ReceiveChatNotifications } from '@/feature/chat'
 import { TurnOnNotificationSettings } from '@/feature/profile'
 import { profileQueries } from '@/shared/api'
 import { useQuery } from '@tanstack/react-query'
@@ -5,22 +6,24 @@ import { Outlet } from '@tanstack/react-router'
 
 export function AuthenticatedLayout() {
   const getSettingsQuery = useQuery(profileQueries.settings())
-
-  if (getSettingsQuery.isPending) {
-    return <div>Loading...</div>
-  }
-
-  if (!getSettingsQuery.data) {
-    return 'Произошла ошибка при загрузке настроек'
-  }
+  const settings = getSettingsQuery.data
 
   return (
     <>
-      <Outlet />
-      <TurnOnNotificationSettings
-        settings={getSettingsQuery.data}
-        onNeedRefreshSettings={getSettingsQuery.refetch}
-      />
+      <ReceiveChatNotifications />
+      {getSettingsQuery.isPending ? (
+        <div>Loading...</div>
+      ) : !settings ? (
+        'Произошла ошибка при загрузке настроек'
+      ) : (
+        <>
+          <Outlet />
+          <TurnOnNotificationSettings
+            settings={settings}
+            onNeedRefreshSettings={getSettingsQuery.refetch}
+          />
+        </>
+      )}
     </>
   )
 }

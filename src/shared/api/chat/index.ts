@@ -2,6 +2,7 @@ export {
   getChatHistory,
   getChatMessageText,
   getChats,
+  readChat,
   sendMessage,
 } from './chat'
 
@@ -13,6 +14,8 @@ export type {
   ChatDto,
   ChatMessageDto,
   GetChatHistoryParams,
+  ReadChatDto,
+  ReadChatParams,
   SendMessageDto,
   SendMessageParams,
 } from './chat.types'
