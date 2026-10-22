@@ -121,3 +121,13 @@ export type ReadChatParams = {
 export type ReadChatDto = {
   setRead: boolean
 }
+
+export type CheckAccountParams = {
+  phoneNumber: string
+}
+
+export type CheckAccountDto = {
+  exist: boolean
+  chatId: string
+  fromCache: boolean
+}

@@ -1,6 +1,6 @@
 import { mutationOptions } from '@tanstack/react-query'
 
-import { readChat, sendMessage } from './chat'
+import { checkAccount, readChat, sendMessage } from './chat'
 import { chatQueries } from './chat.queries'
 
 export const chatMutations = {
@@ -14,5 +14,11 @@ export const chatMutations = {
     mutationOptions({
       mutationKey: [...chatQueries.all(), 'readChat'] as const,
       mutationFn: readChat,
+    }),
+
+  checkAccount: () =>
+    mutationOptions({
+      mutationKey: [...chatQueries.all(), 'checkAccount'] as const,
+      mutationFn: checkAccount,
     }),
 }

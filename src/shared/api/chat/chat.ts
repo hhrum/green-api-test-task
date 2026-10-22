@@ -3,6 +3,8 @@ import { greenApi } from '../client'
 import type {
   ChatDto,
   ChatMessageDto,
+  CheckAccountDto,
+  CheckAccountParams,
   GetChatHistoryParams,
   ReadChatDto,
   ReadChatParams,
@@ -34,6 +36,10 @@ export function sendMessage(body: SendMessageParams) {
 
 export function readChat(body: ReadChatParams) {
   return greenApi<ReadChatDto>('readChat', { body })
+}
+
+export function checkAccount(body: CheckAccountParams) {
+  return greenApi<CheckAccountDto>('checkAccount', { body })
 }
 
 export function getChatMessageText(message: ChatMessageDto) {

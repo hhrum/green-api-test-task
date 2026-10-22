@@ -1,4 +1,5 @@
 export {
+  checkAccount,
   getChatHistory,
   getChatMessageText,
   getChats,
@@ -13,6 +14,8 @@ export { chatQueries } from './chat.queries'
 export type {
   ChatDto,
   ChatMessageDto,
+  CheckAccountDto,
+  CheckAccountParams,
   GetChatHistoryParams,
   ReadChatDto,
   ReadChatParams,
