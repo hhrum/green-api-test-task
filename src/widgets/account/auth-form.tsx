@@ -59,7 +59,8 @@ export function AuthForm() {
               <Field>
                 <Button type="submit">Войти</Button>
                 <FieldDescription className="text-center">
-                  Это безопасно? <a onClick={() => setOpen(true)}>Узнать больше</a>
+                  Это безопасно?{' '}
+                  <a onClick={() => setOpen(true)}>Узнать больше</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>
