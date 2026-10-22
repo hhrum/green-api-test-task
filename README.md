@@ -1,189 +1,86 @@
-Welcome to your new TanStack Start app!
+Добро пожаловать в репозиторий Тестового задания на вакансию "Фронтенд разработчик React", Грин Апи.
 
-# Getting Started
+# Запуска приложения
 
-To run this application:
+Для локального запуска:
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-# Building For Production
+# Prod. сборка
 
-To build this application for production:
+Если нужно (не проверялась):
 
 ```bash
 pnpm build
 ```
 
-## Styling
+# О проекте
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+## Стек
 
-### Removing Tailwind CSS
+Собирал из Tanstack Start. 
 
-If you prefer not to use Tailwind CSS:
+Работает на:
+- React
+- TypeScript
+- Vite
+- Tanstack Router
 
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/app/styles/global.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Remove `@tailwindcss/vite` and `tailwindcss` from `package.json`
+UI-lib:
+- Shadcn
 
-## Linting & Formatting
+Стили:
+- Tailwind CSS
+- Shadcn Theme
 
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+API:
+- Tanstack Query
+
+Архитектура строилась вокруг FSD
+
+## Что сделано
+
+- "Авторизация" - ввод `idInstance` и `apiTokenInstance`, отправка запроса к `getStateInstance`. Подробнее: `/src/shared/auth/verify-auth-data.ts`.
+- Проверка "Включенных уведомлений". - использовал `getSettings` и `setSettings`. Подробнее: `/src/feature/profile/turn-on-notification-settings.tsx`.
+- Подгрузка чатов - использовал `getChats`
+- Подгрузка истории чатов - использовал `getChatHistory`
+- Отправка сообщений - использовал `sendMesssage`
+- Проверка "Наличия аккаунта на номере" - `CheckAccount`
+- Подключены "уведомления" - подробнее `src/feature/chat/receive-chat-notifications.tsx`
+по сути просто обновляют кэш tanstack
+- Отметка о прочтении также уходит - `readChat`
+
+
+## Что не сделано
+
+- "Бесконечная подгрузка" - подгружается только 1 пачка чатов и сообщений
+- Выход из аккаутна - не успел кнопку добавить)
+- Тесты
+
+## Для каких целей использовался ИИ
+
+Т.к. в описании Тестового про это ничего не было сказано, использовал минимально.
+
+В основном:
+- генерация query и mutation
+- мелкий рефакторинг
+- подключений зависимостей и первичная настройка
+
+## Обратная связь по API
+
+- Слегка запутанная навигация в доке, разделение по категориям не всегда интуитивное. 
+- Нельзя использовать без дополнительной прослойки в виде BFF, держать apiToken в url - странно. Лучше перенести в headers, тогда кое-как можно будет хотя бы прятать из DevTools через ServiceWorker. 
+
+В прочем, по api видно, что и не предполагалось, что его будут использовать с клиентским кодом.
+
+## Линтинг, форматирование, type-check
 
 ```bash
 pnpm lint
 pnpm format
 pnpm check
+pnpm typecheck
 ```
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Route files live in `src/app/routes` and stay thin: they declare the route and render a page from `src/pages`. Page UI and page logic belong in `src/pages/<slice>`.
-
-### Adding A Route
-
-To add a new route, add a file in `./src/app/routes` and a page slice in `./src/pages`. The route file should import the page from its public API (`@/pages/<slice>`).
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from '@tanstack/react-router'
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/app/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
